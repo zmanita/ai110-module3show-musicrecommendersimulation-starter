@@ -29,6 +29,15 @@ Some prompts to answer:
 
 You can include a simple diagram or bullet list if helpful.
 
+real-world recommendations  use both collaborative filtering (using other users' behavior) and content-based filtering (using song attributes).
+Some features that each `Song` uses in my system: genre, mood, artist, energy, tempo_bpm, valence, danceability, acousticness
+My `UserProfile` stores history of genre and mood for each user. 
+`Recommender` computes a score for each song via combining song attributes (such as genre, mood, energy, tempo) and user preference with mathmatical operations. 
+
+**Algorithm Recipe & Bias Note:** For each song in the CSV, the system adds bonus points for a genre match and a mood match (both binary), then subtracts the numerical distance between the song's energy, tempo, valence, and danceability and the user's targets — the song with the highest combined score wins. The clearest risk is genre over-prioritization: because genre is all-or-nothing, a song that perfectly matches the user's energy and mood but sits in a neighboring genre (e.g., "indie pop" vs. "pop") can be outranked by a mediocre same-genre track, causing the system to miss great recommendations that a real listener would enjoy.
+
+![Music Recommender Simulation Screenshot](Screenshot%202026-04-16%20at%204.24.10%20PM.png)
+
 ---
 
 ## Getting Started
