@@ -83,6 +83,22 @@ Use this section to document the experiments you ran. For example:
 - What happened when you added tempo or valence to the score
 - How did your system behave for different types of users
 
+**GENRE_SUPREMACY** — metal genre + peaceful mood + calm numerical targets. Illustrates how a strong genre match can override mood and energy signals.
+
+![GENRE_SUPREMACY profile run](Screenshot%202026-04-17%20at%204.06.46%E2%80%AFPM.png)
+
+**NO_GENRE_MATCH** — k-pop genre not present in catalog. Shows how the system falls back to numerical attribute distances when no genre bonus is available.
+
+![NO_GENRE_MATCH profile run](Screenshot%202026-04-17%20at%204.07.36%E2%80%AFPM.png)
+
+**ACOUSTIC_GHOST** — `likes_acoustic=True` field is present in the profile but never used in scoring. Highlights a feature that exists in the data but is silently ignored by the algorithm.
+
+![ACOUSTIC_GHOST profile run](Screenshot%202026-04-17%20at%204.08.09%E2%80%AFPM.png)
+
+**TEMPO_EXTREMIST** — target tempo of 268 bpm, beyond the catalog maximum of 168 bpm. Demonstrates edge-case behavior when user targets fall outside the data range.
+
+![TEMPO_EXTREMIST profile run](Screenshot%202026-04-17%20at%204.08.45%E2%80%AFPM.png)
+
 ---
 
 ## Limitations and Risks
@@ -105,10 +121,9 @@ Read and complete `model_card.md`:
 
 [**Model Card**](model_card.md)
 
-Write 1 to 2 paragraphs here about what you learned:
+The most concrete thing I learned is how much leverage a single number has in a formula like this. The genre bonus I settled on (+3.0 points) is large enough that it overrides almost every other signal — a genre match beats a mood match, and a near-perfect numerical fit from a different genre. That is a bias baked into the design, not the data, and it shows up immediately when you test an edge case like a metal fan whose catalog has only one metal song. The system does not fail gracefully; it just fills the remaining slots with whatever numbers happen to be closest. Seeing that behavior helped me understand why real recommenders rely on so many more signals than a hand-tuned rule.
 
-- about how recommenders turn data into predictions
-- about where bias or unfairness could show up in systems like this
+I also found that the way results are *presented* shapes how intelligent the system seems. Printing a full score breakdown — genre match, mood match, each numerical gap — makes the output feel reasoned and trustworthy even though the underlying math is simple subtraction. That gap between what an algorithm actually does and what a user believes it understands is where a lot of AI fairness problems live. If the explanation sounds confident, users tend to trust the output without questioning the assumptions behind the weights.
 
 
 ---

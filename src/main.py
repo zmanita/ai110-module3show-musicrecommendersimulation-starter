@@ -12,20 +12,43 @@ You will implement the functions in recommender.py:
 from src.recommender import load_songs, recommend_songs
 
 
+HIGH_ENERGY_POP = {
+    "favorite_genre": "pop",
+    "favorite_mood": "energetic",
+    "target_energy": 0.90,           # high-energy, hype listening
+    "target_tempo_bpm": 128,         # fast dance tempo (bpm)
+    "target_valence": 0.85,          # very positive, feel-good
+    "target_danceability": 0.90,     # highly danceable
+    "likes_acoustic": False,         # prefers electronic/produced sound
+}
+
+CHILL_LOFI = {
+    "favorite_genre": "lofi",
+    "favorite_mood": "chill",
+    "target_energy": 0.40,           # low-energy, calm listening
+    "target_tempo_bpm": 80,          # slow-to-mid tempo (bpm)
+    "target_valence": 0.60,          # moderately positive/uplifting
+    "target_danceability": 0.60,     # some groove, not a party track
+    "likes_acoustic": True,          # prefers acoustic over electronic
+}
+
+DEEP_INTENSE_ROCK = {
+    "favorite_genre": "rock",
+    "favorite_mood": "intense",
+    "target_energy": 0.85,           # high-energy, aggressive listening
+    "target_tempo_bpm": 140,         # fast, driving tempo (bpm)
+    "target_valence": 0.35,          # darker, more serious tone
+    "target_danceability": 0.45,     # not focused on danceability
+    "likes_acoustic": False,         # prefers electric/distorted sound
+}
+
+
 def main() -> None:
     songs = load_songs("data/songs.csv")
     print(f"Loaded songs: {len(songs)}")
 
-    # Taste profile: target values for each song feature
-    user_prefs = {
-        "favorite_genre": "lofi",       # preferred genre
-        "favorite_mood": "chill",        # preferred mood
-        "target_energy": 0.40,           # low-energy, calm listening
-        "target_tempo_bpm": 80,          # slow-to-mid tempo (bpm)
-        "target_valence": 0.60,          # moderately positive/uplifting
-        "target_danceability": 0.60,     # some groove, not a party track
-        "likes_acoustic": True,          # prefers acoustic over electronic
-    }
+    # Switch between profiles to test different recommendations
+    user_prefs = CHILL_LOFI
 
     recommendations = recommend_songs(user_prefs, songs, k=5)
 
